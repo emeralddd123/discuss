@@ -11,14 +11,14 @@ const createDiscussion = async (authorId, discussionData) => {
         const { heading, description } = discussionData
         const slug = utils.slugIt(heading)
 
-        const newdiscussion = await newdiscussion.create({
+        const newDiscussion = await Discussion.create({
             slug: slug,
             heading: heading,
             description: description,
             author: authorId,
         });
-        console.log(`user with id : ${authorId} created a discussion ${newdiscussion._id} succesfully`)
-        return { status: 201, message: `discussion Created Succesfully`, discussion: newdiscussion }
+        console.log(`user with id : ${authorId} created a discussion ${newDiscussion._id} succesfully`)
+        return { status: 201, message: `discussion Created Succesfully`, discussion: newDiscussion }
 
     } catch (error) {
         console.error(`Error Occured while user with id: ${authorId} tried to create a discussion \n ${error}`)
@@ -146,10 +146,10 @@ const getMyDiscussion = async (userId, idOrSlug) => {
 }
 
 
-const updatediscussion = async (authorId, discussionId, updateData) => {
+const updateDiscussion = async (authorId, discussionId, updateData) => {
     try {
 
-        const discussionExist = await discussion.findOne({ _id: discussionId, author: authorId });
+        const discussionExist = await discussionId.findOne({ _id: discussionId, author: authorId });
 
         if (!discussionExist) {
             return { status: 404, message: `discussion with ID ${discussionId} not found or doesn't belong to you` };
@@ -195,13 +195,13 @@ const deleteDiscussion = async (authorId, discussionId) => {
 }
 
 
-const getMydiscussions = async (authorId, params) => {
+async function getMyDiscussions(authorId, params) {
     try {
-        const page = parseInt(params.page) || 1;
-        const limit = parseInt(params.limit) || 20;
-        const skip = (page - 1) * limit;
-        const search = params.q || '';
-        const orderBy = params.orderBy || '-timestamp';
+        const page = parseInt(params.page) || 1
+        const limit = parseInt(params.limit) || 20
+        const skip = (page - 1) * limit
+        const search = params.q || ''
+        const orderBy = params.orderBy || '-timestamp'
 
         const searchCriteria = {
             $or: [
@@ -213,16 +213,16 @@ const getMydiscussions = async (authorId, params) => {
             .skip(skip)
             .limit(limit)
             .sort(orderBy)
-            .exec();
+            .exec()
 
-        const total = await Discussion.countDocuments(searchCriteria);
+        const total = await Discussion.countDocuments(searchCriteria)
 
         console.log(`user: ${authorId} fetched their discussions Succesfully`)
 
         return { status: 200, message: `Your Owned discussions fetched succesfully`, data: { discussions, page, limit, total } }
 
     } catch (error) {
-        console.error(error);
+        console.error(error)
         logger.error(`Error Occured while user with id: ${authorId} trying to fetch their discussions \n ${error}`)
         return { status: 500, message: `An Error Occured`, error: error }
     }
@@ -235,8 +235,9 @@ const discussionService = {
     getDiscussions,
     getDiscussion,
     getMyDiscussion,
-    getMydiscussions,
-    updatediscussion,
+    getMyDiscussions,
+    updateDiscussion,
+    deleteDiscussion
 }
 
 
