@@ -42,7 +42,6 @@ discussionRouter.get('/:slugOrId', async (req, res) => {
 
 
 discussionRouter.use(authenticate)
-discussionRouter.use(isActivated)
 
 discussionRouter.get('/u/mydiscussions', async (req, res) => {
     try {

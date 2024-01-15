@@ -31,6 +31,6 @@ const Schema = new mongoose.Schema({
 
 Schema.index({ timestamp: -1 });
 
-const Blog = mongoose.model("Blog", Schema);
+const Discussion = mongoose.model("Discussion", Schema);
 
-module.exports = Blog;
+module.exports = Discussion;

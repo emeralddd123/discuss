@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="navbar">
+                <nav class="navigation hide" id="navigation">
+                    <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+                    <ul class="nav-list">
+                        <li class="nav-item"><a href="forums.html">Forums</a></li>
+                        <li class="nav-item"><a href="posts.html">Posts</a></li>
+                        <li class="nav-item"><a href="detail.html">Detail</a></li>
+                    </ul>
+                </nav>
+                <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+                <div class="brand">Forum</div>
+            </div>
+        </header>
+        <div class="form-container">
+            <div class="wrapper">
+                <div class="title"><span>Login</span></div>
+                <form action="/login" method="post">
+                    <div class="row">
+                        <i class="fas fa-user"></i>
+                        <input id="email" name="email" type="text" placeholder="Email" required>
+                    </div>
+                    <div class="row">
+                        <i class="fas fa-lock"></i>
+                        <input id="password" name="password" type="password" placeholder="Password" required>
+                    </div>
+                    <br>
+                    <div class="row button">
+                        <input type="submit" value="Login">
+                    </div>
+                    <div class="signup-link" style="color: #52057b;">Not a member? <a href="/signup">Signup now</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+</body>
+
+</html>

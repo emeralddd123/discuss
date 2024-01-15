@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const Reply = require('../models/reply')
 const Discussion = require('../models/discussion')
 
@@ -6,7 +8,7 @@ async function getAllReplies(discussionId) {
         const replies = await Reply.aggregate([
             {
                 $match: {
-                    _id: mongoose.Types.ObjectId(discussionId),
+                    _id: new mongoose.Types.ObjectId(discussionId),
                     is_deleted: false,
                 },
             },

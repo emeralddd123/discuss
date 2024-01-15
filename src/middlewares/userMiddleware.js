@@ -28,4 +28,4 @@ const validLoginCreation = (req, res, next) => {
     next()
 }
 
-module.exports = { validUserCreation, validLoginCreation, validUserActivation }
+module.exports = { validUserCreation, validLoginCreation }

@@ -5,6 +5,7 @@ require('dotenv').config()
 const authenticate = (req, res, next) => {
     // some code to check for user authentication
     try {
+        console.log('here')
         const authToken = req.headers.authorization;
         if (!authToken) {
             return res.status(401).json({ message: "Authentication Credentials not provided" });

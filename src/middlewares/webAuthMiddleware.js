@@ -18,7 +18,7 @@ const checkIfUser = (req, res, next) => {
 }
 
 
-const authenticate = (req, res, next) => {
+const webAuthenticate = (req, res, next) => {
     try {
         const token = req.cookies.jwt
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
@@ -44,4 +44,4 @@ const isActivated = (req, res, next) => {
 }
 
 
-module.exports = { checkIfUser, authenticate, isActivated }
+module.exports = {webAuthenticate, checkIfUser}
