@@ -234,6 +234,21 @@ async function getMyDiscussions(authorId, params) {
 
 }
 
+const adminDeleteDiscussion = async (discussionId) => {
+    try {
+        const discussion = await Discussion.findOneAndDelete({ _id: discussionId })
+
+        if (!discussion) {
+            return { status: 404, message: `discussion with ID ${discussionId} not found` };
+        }
+        console.log(`discussion deleted by a moderator`)
+        return { status: 200, message: `discussion with ID ${discussionId}  deleted succesfully`, discussion }
+
+    } catch (error) {
+        console.log(`Error Occured while trying to delete discussion: ${discussionId} \n ${error}`)
+        return { status: 500, message: 'Error deleting the discussion', error };
+    }
+}
 
 const discussionService = {
     createDiscussion,
@@ -242,7 +257,8 @@ const discussionService = {
     getMyDiscussion,
     getMyDiscussions,
     updateDiscussion,
-    deleteDiscussion
+    deleteDiscussion,
+    adminDeleteDiscussion
 }
 
 

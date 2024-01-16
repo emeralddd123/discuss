@@ -24,3 +24,4 @@ function hideReplyBox(){
     commentArea.classList.add("hide"); 
 }
 
+

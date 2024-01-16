@@ -8,7 +8,8 @@ async function getAllReplies(discussionId) {
         const replies = await Reply.aggregate([
             {
                 $match: {
-                    _id: new mongoose.Types.ObjectId(discussionId)                },
+                    _id: new mongoose.Types.ObjectId(discussionId)
+                },
             },
             {
                 $graphLookup: {
@@ -96,10 +97,24 @@ async function addReply(authorId, discussionId, replyData, parentReplyId = null)
     }
 }
 
+async function adminDeleteReply(replyId) {
+    try {
+        const reply = await Reply.findByIdAndDelete(replyId)
+        if (reply) {
+            return { status: 200, message: 'reply fetched successfully' };
+        }
+        return { status: 404, message: `reply with id ${replyId} not found`, data: null };
+
+    } catch (error) {
+        console.error(error);
+        return { status: 500, message: 'Server error', data: null };
+    }
+}
 
 
 module.exports = {
     getAllReplies,
     getReply,
-    addReply
+    addReply,
+    adminDeleteReply
 };

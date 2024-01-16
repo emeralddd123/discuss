@@ -47,6 +47,14 @@
                             <div class="comment">
                                 <button onclick="showReply()">Reply</button>
                             </div>
+                            <% if (user && user.role==='moderator' ) { %>
+                                <form class="comment" style="padding-right: 5%;"
+                                    action="/discussion/<%= discussion._id %>/delete" method="post">
+                                    <button type="submit" id="deleteButton"
+                                        style="background-color: red; color: white;">Delete</button>
+                                </form>
+                                <% } %>
+
                     </div>
                 </div>
             </div>
@@ -79,6 +87,14 @@
                         </div>
                         <div class="content">
                             <%= reply.text %>
+                                <% if (user && user.role==='moderator' ) { %>
+                                    <form class="comment" style="padding-right: 5%;"
+                                        action="/reply/<%= reply._id %>/delete" method="post">
+                                        <button type="submit" id="deleteButton"
+                                            style="background-color: red; color: white;">Delete</button>
+                                    </form>
+
+                                    <% } %>
 
                         </div>
                     </div>

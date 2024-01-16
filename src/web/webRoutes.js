@@ -5,7 +5,7 @@ const moment = require('moment')
 
 const authService = require('../services/authService')
 const userService = require('../services/userService')
-const { webAuthenticate, checkIfUser } = require('../middlewares/webAuthMiddleware')
+const { webAuthenticate, checkIfUser, isModerator } = require('../middlewares/webAuthMiddleware')
 const discService = require('../services/discussionService');
 const replyService = require('../services/replyService')
 
@@ -15,15 +15,16 @@ const webRouter = express.Router();
 // webRouter.use(express.static('public'));
 webRouter.use(cookieParser())
 
-webRouter.get('/', async (req, res) => {
-	res.sendFile(path.join(__dirname, '../../public', 'index.html'));
+webRouter.get('', async (req, res) => {
+	return res.redirect('/home');
 });
 
 webRouter.use(checkIfUser)
 
 webRouter.get('/home', async (req, res) => {
 	try {
-		let user = req.user
+		let user  
+		user = req.user
 
 		const params = req.query
 		const response = await discService.getDiscussions(params)
@@ -109,7 +110,7 @@ webRouter.get('/discussion/:slugOrId', async (req, res) => {
 		const response = await discService.getDiscussion(req.params.slugOrId)
 
 		if (response.status === 200) {
-			return res.render('discussion', { message: response.message, discussion: response.discussion, moment })
+			return res.render('discussion', { message: response.message, discussion: response.discussion, moment, user })
 		} else {
 			return res.redirect('/home')     //{ message: response.message, user }
 		}
@@ -227,6 +228,42 @@ webRouter.post('/discussion/:slugOrId/reply', async (req, res) => {
 		res.redirect('/errorPage') //, { error: error }
 	}
 
+})
+
+
+webRouter.get('/logout', (req, res) => {
+	try {
+		res.clearCookie('jwt')
+		res.redirect('/')
+	} catch (error) {
+
+		res.redirect('/errorPage')
+	}
+});
+
+
+webRouter.use(isModerator)
+
+webRouter.post('/discussion/:discId/delete', async (req, res) => {
+	const discussionId = req.params.discId
+
+	const response = await discService.adminDeleteDiscussion(discussionId)
+	if (response.status === 200) {
+		return res.redirect(`/home`)	//{ message: response.message, discussion: discussion, moment }
+	} else {
+		return res.redirect('/errorPage')	//, { message: response.message }
+	}
+})
+
+
+webRouter.post('/reply/:replyId/delete', async (req, res) => {
+	const replyId = req.params.replyId
+	const response = await replyService.adminDeleteReply(replyId)
+	if (response.status === 200) {
+		return res.redirect(`/home`)
+	} else {
+		return res.redirect('/errorPage')	
+	}
 })
 
 

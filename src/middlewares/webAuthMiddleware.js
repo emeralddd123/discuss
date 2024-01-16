@@ -44,4 +44,17 @@ const isActivated = (req, res, next) => {
 }
 
 
-module.exports = {webAuthenticate, checkIfUser}
+const isModerator = (req, res, next) => {
+    try {
+        if (req.user.role !== 'moderator') {
+            return res.redirect('errorPage')  //should actually stay on same page
+        }
+    } catch (error) {
+        return res.redirect('/errorPage') //, { error: error }
+    }
+    next()
+
+}
+
+
+module.exports = { webAuthenticate, checkIfUser, isModerator }

@@ -727,3 +727,44 @@ textarea {
   text-decoration: none;
   display: inline-block;
 }
+
+
+/* Chart */
+nav.chart {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Pagination */
+ul.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+ul.pagination li.page-item {
+  margin: 0 5px;
+}
+
+ul.pagination a.page-link {
+  text-decoration: none;
+  color: #52057b;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+}
+
+ul.pagination li.page-item.active a.page-link {
+  background-color: #52057b;
+  color: #fff;
+}
+
+/* Previous and Next buttons */
+ul.pagination li.page-item:first-child a.page-link,
+ul.pagination li.page-item:last-child a.page-link {
+  padding: 10px 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+}

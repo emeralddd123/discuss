@@ -19,16 +19,21 @@
         <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
         <div class="brand">Forum</div>
     </div>
-    <!--SearchBox Section-->
-    <div class="search-box">
-        <div>
-            <select name="" id="">
-                <option value="Everything">Everything</option>
-                <option value="Titles">Titles</option>
-                <option value="Descriptions">Descriptions</option>
-            </select>
-            <input type="text" name="q" placeholder="search ...">
-            <button><i class="fa fa-search"></i></button>
-        </div>
-    </div>
+    <% if (user && user.role==='moderator' ) { %>
+        <div style="margin: auto; text-align: center; font-size: large; color: red;">Moderator Mode</div>
+        <% } %>
+            <!--SearchBox Section-->
+            <div class="search-box">
+                <div>
+                    <form action="" method="get">
+                        <select name="orderBy" id="">
+                        <option  value="-timestamp">Date Posted</option>
+                        <option value="heading">Heading</option>
+                    </select>
+                    <input type="text" name="q" placeholder="search ...">
+                    <button><i class="fa fa-search"></i></button>
+                    </form>
+                    
+                </div>
+            </div>
 </header>
