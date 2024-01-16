@@ -1,11 +1,14 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const moment = require('moment')
 
 const authService = require('../services/authService')
 const userService = require('../services/userService')
 const { webAuthenticate, checkIfUser } = require('../middlewares/webAuthMiddleware')
 const discService = require('../services/discussionService');
+const replyService = require('../services/replyService')
+
 
 const webRouter = express.Router();
 
@@ -22,11 +25,11 @@ webRouter.get('/home', async (req, res) => {
 	try {
 		let user = req.user
 
-		// const params = req.query
-		// const response = await discService.    .getdiscussions(params)
-		// if (response.status === 200) {
-		// 	return res.render('home', { data: response.data, message: response.message, user })
-		// }
+		const params = req.query
+		const response = await discService.getDiscussions(params)
+		if (response.status === 200) {
+			return res.render('home', { data: response.data, message: response.message, user, moment })
+		}
 		return res.render('home')
 
 	} catch (error) {
@@ -39,7 +42,7 @@ webRouter.get('/home', async (req, res) => {
 webRouter.get('/signup', async (req, res) => {
 	let message
 	let user = req.user
-	if(user) {
+	if (user) {
 		return res.redirect('/home')
 	}
 	res.render('signup', { message, user })
@@ -58,7 +61,7 @@ webRouter.post('/signup', async (req, res) => {
 		} else if (response.status === 201) {
 			return res.redirect('/home') //, { message: response.message }
 		} else {
-			return res.render('signup', { message: response.message ,user})
+			return res.render('signup', { message: response.message, user })
 		}
 	} catch (error) {
 		res.redirect('/errorPage') //, { error: error }
@@ -69,10 +72,10 @@ webRouter.post('/signup', async (req, res) => {
 webRouter.get('/login', async (req, res) => {
 	let message
 	let user = req.user
-	if(user) {
+	if (user) {
 		return res.redirect('/home')
 	}
-	res.render('login', { message ,user})
+	res.render('login', { message, user })
 })
 
 
@@ -80,7 +83,7 @@ webRouter.post('/login', async (req, res) => {
 	try {
 		let user = req.user
 		const loginData = { email, password } = req.body
-		console.log({loginData})
+		console.log({ loginData })
 		const response = await authService.login(loginData)
 
 		if (response.status === 401) {
@@ -100,13 +103,18 @@ webRouter.post('/login', async (req, res) => {
 
 
 // discussion
-webRouter.get('/discuss/:slugOrId', async(req, res) => {
+webRouter.get('/discussion/:slugOrId', async (req, res) => {
 	try {
 		let user = req.user
+		const response = await discService.getDiscussion(req.params.slugOrId)
 
-		return res.render('discussion')
+		if (response.status === 200) {
+			return res.render('discussion', { message: response.message, discussion: response.discussion, moment })
+		} else {
+			return res.redirect('/home')     //{ message: response.message, user }
+		}
 	} catch (error) {
-		
+		return res.redirect('/errorPage')
 	}
 })
 
@@ -183,7 +191,7 @@ webRouter.post('/edit-discussion/:discussionId', async (req, res) => {
 		const userId = req.user._id
 
 		const updateData = { heading, description } = req.body
-		
+
 		const response = await discService.updateDiscussion(userId, discussionId, updateData)
 
 		if (response.status === 200) {
@@ -198,6 +206,28 @@ webRouter.post('/edit-discussion/:discussionId', async (req, res) => {
 	}
 })
 
+
+webRouter.post('/discussion/:slugOrId/reply', async (req, res) => {
+	try {
+		let message
+		let userId = req.user._id
+		discussionId = req.params.slugOrId
+
+		const replyData = { text: req.body.replyText }
+
+		const response = await replyService.addReply(userId, discussionId, replyData)
+		if (response.status === 201) {
+			return res.redirect(`/discussion/${discussionId}`)	//{ message: response.message, discussion: discussion, moment }
+		} else {
+			return res.redirect('/home')	//, { message: response.message }
+		}
+
+	} catch (error) {
+		console.log(error)
+		res.redirect('/errorPage') //, { error: error }
+	}
+
+})
 
 
 module.exports = webRouter;

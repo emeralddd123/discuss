@@ -9,7 +9,7 @@ const replyRouter = require('./routes/replyRouter')
 const { forwardParam } = require('../middlewares/otherMiddlewares')
 
 apiRouter.use('/users', userRouter);
-apiRouter.use('/discussions/:discussionId/reply', forwardParam('discussionId'), replyRouter);
+apiRouter.use('/discussion/:discussionId/reply', forwardParam('discussionId'), replyRouter);
 apiRouter.use('/discussion', discussionRouter);
 apiRouter.use('/auth', authRouter)
 

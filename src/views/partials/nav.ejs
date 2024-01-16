@@ -1,0 +1,34 @@
+<header>
+    <!--NavBar Section-->
+    <div class="navbar">
+        <nav class="navigation hide" id="navigation">
+            <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+            <ul class="nav-list">
+                <% if (user) { %>
+                    <li class="nav-item"><a href="/logout">Logout</a></li>
+                    <li class="nav-item"><a href="/create-discussion">Add Discussion</a></li>
+                    <li class="nav-item"><a href="/home">Home</a></li>
+
+                    <% } else { %>
+                        <li><a class="nav-item" href="/login">Sign In</a></li>
+                        <li class="nav-item"><a href="/home">Home</a></li>
+                        <% } %>
+
+            </ul>
+        </nav>
+        <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+        <div class="brand">Forum</div>
+    </div>
+    <!--SearchBox Section-->
+    <div class="search-box">
+        <div>
+            <select name="" id="">
+                <option value="Everything">Everything</option>
+                <option value="Titles">Titles</option>
+                <option value="Descriptions">Descriptions</option>
+            </select>
+            <input type="text" name="q" placeholder="search ...">
+            <button><i class="fa fa-search"></i></button>
+        </div>
+    </div>
+</header>

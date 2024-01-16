@@ -8,9 +8,7 @@ async function getAllReplies(discussionId) {
         const replies = await Reply.aggregate([
             {
                 $match: {
-                    _id: new mongoose.Types.ObjectId(discussionId),
-                    is_deleted: false,
-                },
+                    _id: new mongoose.Types.ObjectId(discussionId)                },
             },
             {
                 $graphLookup: {
@@ -37,17 +35,17 @@ async function getAllReplies(discussionId) {
             },
         ]);
 
-        return replies;
+        return { status: 200, message: 'Replies fetched successfully', replies };
     } catch (error) {
         console.error('Error fetching replies:', error);
-        throw new Error('Failed to fetch replies');
+        return { status: 500, message: 'Failed to fetch replies' };
     }
 }
 
 
 async function getReply(replyId) {
     try {
-        const reply = await reply.findById(replyId)
+        const reply = await Reply.findById(replyId)
 
         if (!reply) {
             return { status: 404, message: `reply with id ${replyId} not found`, data: null };
@@ -62,6 +60,7 @@ async function getReply(replyId) {
 
 async function addReply(authorId, discussionId, replyData, parentReplyId = null) {
     const { text } = replyData
+
     try {
         const newReply = new Reply({
             text: text,

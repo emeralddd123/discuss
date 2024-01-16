@@ -12,55 +12,31 @@
 </head>
 
 <body>
-    <header>
-        <!--NavBar Section-->
-        <div class="navbar">
-            <nav class="navigation hide" id="navigation">
-                <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="forums.html">Forums</a></li>
-                    <li class="nav-item"><a href="posts.html">Posts</a></li>
-                    <li class="nav-item"><a href="detail.html">Detail</a></li>
-                </ul>
-            </nav>
-            <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
-            <div class="brand">My Forum</div>
-        </div>
-        <!--SearchBox Section-->
-        <div class="search-box">
-            <div>
-                <select name="" id="">
-                    <option value="Everything">Everything</option>
-                    <option value="Titles">Titles</option>
-                    <option value="Descriptions">Descriptions</option>
-                </select>
-                <input type="text" name="q" placeholder="search ...">
-                <button><i class="fa fa-search"></i></button>
-            </div>
-        </div>
-        <div class="container">
-            
+    <%- include('./partials/nav') %>
 
-            <div class="container" style="padding-top: 120px;">
-                <form action="/create-discussion" method="post">
-    
-                    <div class="form-outline mb-4">
-                        <input type="text" id="heading" name="heading" required="true" class="form-control" />
-                        <label class="form-label" for="heading">Heading</label>
-                    </div>
-    
-                    <div class="form-outline mb-4">
-                        <textarea name="description" id="description" name="description">
-    
+
+
+        <div class="container" style="padding-top: 120px;">
+            <form action="/create-discussion" method="post">
+
+                <div class="form-outline mb-4">
+                    <input type="text" id="heading" name="heading" required="true" class="form-control" />
+                    <label class="form-label" for="heading">Heading</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <textarea name="description" class="form-control" id="description" name="description">
+
                         </textarea>
-                    </div>
-    
-                    <button type="submit" class="btn btn-primary btn-block mb-4">
-                        Post
-                    </button>
-                </form>
-    
-            </div>
+                    <label class="form-label" for="description">Description</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mb-4">
+                    Post
+                </button>
+            </form>
+
+        </div>
 
         </div>
         <footer>

@@ -67,26 +67,31 @@ const getDiscussion = async (idOrSlug) => {
     try {
         let discussion;
 
+        const discussionPopulateOptions = [
+            {
+                path: 'author',
+                select: '_id username email',
+            },
+            {
+                path: 'replies',
+                populate: {
+                    path: 'author',
+                    select: '_id username email',
+                },
+            },
+        ];
+        
         if (mongoose.Types.ObjectId.isValid(idOrSlug)) {
             discussion = await Discussion.findOne({
                 _id: idOrSlug,
-                state: 'published'
-            }).populate({
-                path: 'author',
-                select: '_id username email'
-            }).exec();
+            }).populate(discussionPopulateOptions).exec();
         } else {
             discussion = await Discussion.findOne({
                 slug: idOrSlug,
-            }).populate({
-                path: 'author',
-                select: '_id username email'
-            })
+            }).populate(discussionPopulateOptions).exec();
         }
 
         if (discussion) {
-            const replies = await getAllReplies(discussion.id)
-            discussion.replies = replies
             console.log(`Discussion with idOrSlug: ${idOrSlug} returned Succesfully`)
             return { status: 200, message: `Discussion Fetched Succesfully`, discussion: discussion, author: discussion.author }
 
@@ -149,7 +154,7 @@ const getMyDiscussion = async (userId, idOrSlug) => {
 const updateDiscussion = async (authorId, discussionId, updateData) => {
     try {
 
-        const discussionExist = await discussionId.findOne({ _id: discussionId, author: authorId });
+        const discussionExist = await Discussion.findOne({ _id: discussionId, author: authorId });
 
         if (!discussionExist) {
             return { status: 404, message: `discussion with ID ${discussionId} not found or doesn't belong to you` };

@@ -714,3 +714,16 @@ textarea {
   font-size: inherit;
   line-height: inherit;
 }
+
+
+.hide-button {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 10px 20px; 
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
