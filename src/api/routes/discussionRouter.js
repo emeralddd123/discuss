@@ -71,7 +71,7 @@ discussionRouter.post('', validDiscussCreation, async (req, res) => {
         const result = await discussionService.createDiscussion(authorId, discussionData)
 
         if (result.status === 201) {
-            return res.status(result.status).json({ message: result.message, discussion: result.discussion });
+            return res.status(201).json({ message: result.message, discussion: result.discussion });
         } else {
             return res.status(result.status).json({ error: result.message });
         }
